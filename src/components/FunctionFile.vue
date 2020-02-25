@@ -6,7 +6,11 @@
 			<i class="el-icon-upload" ></i>
 			<div>点击这里上传文件</div><input type="file" @change="update"/>
 		</a>
-		<el-button @click="fileLoad()">文件下载</el-button>
+		<div class="row">
+			<el-button @click="predict()">进行预测</el-button>
+			<el-button @click="fileLoad()">文件下载</el-button>
+		</div>
+		<div v-if="loading" v-loading="true" element-loading-spinner="el-icon-loading" style="margin-top: 2.275rem;height: 1rem;" element-loading-text="正在预测，请稍后"></div>
 		</div>
 	</div>
 </template>
@@ -16,7 +20,8 @@ export default {
 	data() {
 		return {
 			path: 'http://localhost:9998/download/',
-			name: ''
+			name: '',
+			loading: false,
 		};
 	},
 	methods: {
@@ -35,7 +40,14 @@ export default {
 		fileLoad(){
 			alert(this.path+this.name);
 			window.open(this.path+this.name);
-		}
+		},
+		predict(){
+			this.loading = true;
+			this.$axios.post('http://127.0.0.1:9998/compute').then(response => {
+				this.loading = false;
+				alert(response.data.msg);
+			})
+		},
 	}
 }
 </script>
@@ -46,16 +58,16 @@ h1 {
 .fun {
 	box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 	border-radius: 30px;
-	height: 22rem;
+	height: 26rem;
 	width: 70%;
 	margin: 1rem auto;
 	padding: 1.5rem;
 }
 .load {
 	height: 3.75rem;
-	width: 200px;
+	width: 28.75rem;
 	margin: 0 auto;
-	line-height: 3.75rem;
+	line-height: 1.75rem;
 }
 i {
 	font-size:3.5rem;
@@ -88,4 +100,11 @@ i {
     color: #004974;
     text-decoration: none;
 }
+.row{
+	display: flex;
+}
+.row > button{
+	flex: 1;
+}
+
 </style>

@@ -1,6 +1,6 @@
 # methylationpredict
 
-> 毕业设计服务器
+> 一个机器学习的服务器
 
 ## Build Setup
 
